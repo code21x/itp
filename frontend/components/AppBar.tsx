@@ -12,7 +12,11 @@ export default function AppBar() {
                         <AiFillSlackCircle />
                     </div>
                     <div className="flex flex-col justify-center">
-                        LearnLand
+                        <div>
+                        Learn
+                        <span className="text-purple-500">Land</span>
+                        </div>
+                        
                     </div>
                 </div>
 
