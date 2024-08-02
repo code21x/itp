@@ -1,3 +1,6 @@
+"use client"
+
+import { signIn, signOut } from "next-auth/react"
 import { BsStars } from "react-icons/bs";
 import { AiFillSlackCircle } from "react-icons/ai";
 import { BsMoonStars } from "react-icons/bs";
@@ -30,13 +33,13 @@ export default function AppBar() {
             </div>
 
             <div className="flex justify-center gap-4">
-                <div className="border border-slate-800 px-4 pt-3 pb-2 text-lg text-white font-semibold rounded-lg hover:bg-slate-800 transition-all cursor-pointer">
+                <button className="border border-slate-800 px-4 pt-2 pb-2 text-lg text-white font-semibold rounded-lg hover:bg-slate-800 transition-all cursor-pointer" onClick={() => signIn()}>
                     Login
-                </div>
-                <div className="bg-purple-800 px-4 pt-3 pb-2 text-lg text-white font-semibold rounded flex justify-center gap-2 hover:bg-purple-900 transition-all cursor-pointer">
-                    <div>
+                </button>
+                <div className="bg-purple-800 px-4 pt-2 pb-2 text-lg text-white font-semibold rounded flex justify-center gap-2 hover:bg-purple-900 transition-all cursor-pointer">
+                    <button>
                         Join now 
-                    </div>
+                    </button>
                     <div className="flex flex-col justify-center">
                         <BsStars />
                     </div>

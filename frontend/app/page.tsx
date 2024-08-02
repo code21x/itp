@@ -84,13 +84,7 @@ export default function Home() {
           Unleashing Your Inner Developer Genius! Start Learning Today and
           Transform into a Tech Pro Tomorrow!
         </div>
-
         
-
-
-
-
-
         </div>
       </div>
     </div>

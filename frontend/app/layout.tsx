@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import AppBar from "@/components/AppBar";
 import { cn } from "../lib/utils";
+import { Providers } from "./providers";
 
 
 const inter = Inter({ subsets: ["latin"], variable: '--font-sans', });
@@ -23,8 +24,10 @@ export default function RootLayout({
           'h-screen bg-black',
           inter.variable,
         )}>
+          <Providers>
             <AppBar />
-        {children}
+            {children}
+        </Providers>
       </body>
     </html>
   );
