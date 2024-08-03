@@ -1,6 +1,6 @@
 "use client"
 
-import { signIn, signOut } from "next-auth/react"
+import { signIn, signOut, useSession } from "next-auth/react"
 import { BsStars } from "react-icons/bs";
 import { AiFillSlackCircle } from "react-icons/ai";
 import { BsMoonStars } from "react-icons/bs";
@@ -13,6 +13,8 @@ interface AppBarProps {
 
 export default function AppBar() {
 
+    const session = useSession();
+
     return <nav className="fixed top-0 z-50 w-full border-b border-slate-800 bg-black/80 shadow-sm backdrop-blur-md print:hidden">
     <div className="py-5 px-10">
         <div className="flex justify-between">
@@ -22,17 +24,20 @@ export default function AppBar() {
                         <AiFillSlackCircle />
                     </div>
                     <div className="flex flex-col justify-center">
-                        <div>
-                        Learn
-                        <span className="text-purple-500">Land</span>
-                        </div>
-                        
+                        <a href="/">
+                            <div>
+                            Learn
+                            <span className="text-purple-500">Land</span>
+                            </div>
+                        </a>
                     </div>
                 </div>
 
             </div>
-
-            <div className="flex justify-center gap-4">
+            
+            {session.data?.user ? <button className="border border-slate-800 px-4 pt-2 pb-2 text-lg text-white font-semibold rounded-lg hover:bg-slate-800 transition-all cursor-pointer" onClick={() => signOut()}>
+                    Logout
+                </button> : <div className="flex justify-center gap-4">
                 <button className="border border-slate-800 px-4 pt-2 pb-2 text-lg text-white font-semibold rounded-lg hover:bg-slate-800 transition-all cursor-pointer" onClick={() => signIn()}>
                     Login
                 </button>
@@ -47,7 +52,8 @@ export default function AppBar() {
                 <div className="flex flex-col justify-center text-white font-semibold rounded-lg px-4 py-2 text-lg border border-slate-800 hover:bg-slate-800 transition-all cursor-pointer">
                     <BsMoonStars />
                 </div>
-            </div>
+            </div>}
+
         </div>
     </div>
 </nav>
