@@ -4,6 +4,7 @@ import { signIn, signOut, useSession } from "next-auth/react"
 import { BsStars } from "react-icons/bs";
 import { AiFillSlackCircle } from "react-icons/ai";
 import { BsMoonStars } from "react-icons/bs";
+import { useRouter } from "next/navigation";
 
 interface AppBarProps {
     login: boolean;
@@ -14,6 +15,7 @@ interface AppBarProps {
 export default function AppBar() {
 
     const session = useSession();
+    const router = useRouter();
 
     return <nav className="fixed top-0 z-50 w-full border-b border-slate-800 bg-black/80 shadow-sm backdrop-blur-md print:hidden">
     <div className="py-5 px-10">
@@ -42,7 +44,9 @@ export default function AppBar() {
                     Login
                 </button>
                 <div className="bg-purple-800 px-4 pt-2 pb-2 text-lg text-white font-semibold rounded flex justify-center gap-2 hover:bg-purple-900 transition-all cursor-pointer">
-                    <button>
+                    <button onClick={() => {
+                        router.push("/signup")
+                    }}>
                         Join now 
                     </button>
                     <div className="flex flex-col justify-center">
