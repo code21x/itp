@@ -3,13 +3,17 @@ import { Button } from "@/components/Button";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { signup } from "@/actions/user";
 
 
 export default function Signup() {
 
-    const router = useRouter();
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [checkingPassword, setCheckingPassword] = useState(false);
+    const router = useRouter();
 
     function togglePasswordVisibility() {
         setIsPasswordVisible((prevState: any) => !prevState);
@@ -27,7 +31,7 @@ export default function Signup() {
                         Full name
                     </div>
                     <div className="">
-                        <input type="text" placeholder="Monish" className="w-full h-12 rounded-md border border-slate-800 bg-black p-4 pb-4 text-lg focus:border-purple-800 focus:outline-none focus:ring-2 ring-purple-800" />
+                        <input onChange={(e) => setName(e.target.value)} type="text" placeholder="john doe" className="w-full h-12 rounded-md border border-slate-800 bg-black p-4 pb-4 text-lg focus:border-purple-800 focus:outline-none focus:ring-2 ring-purple-800" />
                     </div>
             </div>
             <div className="pb-4">
@@ -35,7 +39,7 @@ export default function Signup() {
                     Email
                 </div>
                 <div className="">
-                    <input type="email" placeholder="name@email.com" className="w-full h-12 rounded-md border border-slate-800 bg-black p-4 pb-4 text-lg focus:border-purple-800 focus:outline-none focus:ring-2 ring-purple-800" />
+                    <input onChange={(e) => setEmail(e.target.value)} type="email" placeholder="name@email.com" className="w-full h-12 rounded-md border border-slate-800 bg-black p-4 pb-4 text-lg focus:border-purple-800 focus:outline-none focus:ring-2 ring-purple-800" />
                 </div>
             </div>
             <div className="pb-4">
@@ -43,12 +47,13 @@ export default function Signup() {
                     Password
                 </div>
                 <div>
-                    <input type={isPasswordVisible ? 'text' : 'password'} placeholder="••••••••" className="w-full h-12 rounded-md bg-black border border-slate-800 p-4 pb-4 text-lg focus:border-purple-800 focus:outline-none focus:ring-2 ring-purple-800" />
+                    <input onChange={(e) => setPassword(e.target.value)} type={isPasswordVisible ? 'text' : 'password'} placeholder="••••••••" className="w-full h-12 rounded-md bg-black border border-slate-800 p-4 pb-4 text-lg focus:border-purple-800 focus:outline-none focus:ring-2 ring-purple-800" />
                     
                 </div>
             </div>
             
             <Button onClick={async () => {
+                const response = await signup(name, email, password);
                 alert("Success");
                 console.log("monish");
                 router.push("/signin")}}>Continue</Button>
