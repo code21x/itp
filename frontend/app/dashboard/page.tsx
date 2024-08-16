@@ -27,14 +27,16 @@ const sidebarMenuItems: LearnLandSidebarButton[] = [
 export default function DashBoard() {
 
     return <div className="grid grid-cols-12 h-screen w-screen">
-       <div className="col-span-3 pt-36 ml-9 px-4">
+       <div className="col-span-2 pt-36 ml-9 px-4 border-r border-slate-800">
 
         <div className="mt-1 text-xl text-white">
           <ul>
-          {sidebarMenuItems.map((item) => (<li className="flex justify-start items-center gap-4 hover:bg-gray-800 rounded-full px-4 py-3 w-fit cursor-pointer transition-all mt-2 border " key={item.title}>
-            <span className="text-3xl">{item.icon}</span>
-            <span>{item.title}</span>
+            <div>
+          {sidebarMenuItems.map((item) => (<li className="w-48 flex justify-start items-center gap-4 hover:bg-gray-800 rounded-md px-4 py-3 cursor-pointer transition-all mt-2 border" key={item.title}>
+            <span className="text-lg">{item.icon}</span>
+            <span className="text-xl">{item.title}</span>
             </li>))}
+            </div>
           </ul>
         </div>
       </div>
