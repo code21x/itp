@@ -5,6 +5,8 @@ import { useState } from "react";
 export default function Signin() {
 
     const router = useRouter();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [checkingPassword, setCheckingPassword] = useState(false);
 
@@ -23,7 +25,7 @@ export default function Signin() {
                         Email
                     </div>
                     <div className="">
-                        <input type="email" placeholder="name@email.com" className="w-full h-12 rounded-md border border-slate-800 bg-black p-4 pb-4 text-lg focus:border-purple-800 focus:outline-none focus:ring-2 ring-purple-800" />
+                        <input onChange={(e) => setEmail(e.target.value)} type="email" placeholder="name@email.com" className="w-full h-12 rounded-md border border-slate-800 bg-black p-4 pb-4 text-lg focus:border-purple-800 focus:outline-none focus:ring-2 ring-purple-800" />
                     </div>
                 </div>
                 <div className="pb-4">
@@ -31,19 +33,18 @@ export default function Signin() {
                         Password
                     </div>
                     <div>
-                        <input type={isPasswordVisible ? 'text' : 'password'} placeholder="••••••••" className="w-full h-12 rounded-md bg-black border border-slate-800 p-4 pb-4 text-lg focus:border-purple-800 focus:outline-none focus:ring-2 ring-purple-800" />
-                        
+                        <input onChange={(e) => setPassword(e.target.value)} type={isPasswordVisible ? 'text' : 'password'} placeholder="••••••••" className="w-full h-12 rounded-md bg-black border border-slate-800 p-4 pb-4 text-lg focus:border-purple-800 focus:outline-none focus:ring-2 ring-purple-800" />
                     </div>
                 </div>
                 
                 <button className="bg-purple-800 text-center w-full py-3 text-black text-xl font-semibold rounded-md hover:bg-purple-900 cursor-pointer transition-all" onClick={async () => {
                     const res = await signIn("credentials", {
-                        username: "",
-                        password: "",
+                        username: email,
+                        password: password,
                         redirect: false,
                     });
                     console.log("monish");
-                    router.push("/")
+                    router.push("/dashboard")
                 }}>Login</button>
             </div>
         </div>

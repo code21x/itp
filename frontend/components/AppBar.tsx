@@ -6,6 +6,7 @@ import { AiFillSlackCircle } from "react-icons/ai";
 import { BsMoonStars } from "react-icons/bs";
 import { useRouter } from "next/navigation";
 
+
 interface AppBarProps {
     login: boolean;
     signup: boolean;
@@ -17,6 +18,19 @@ export default function AppBar() {
     const session = useSession();
     const router = useRouter();
 
+    const handleLogoClick = () => {
+        if (session.status === 'loading') {
+            return <div>Loading...</div>;
+        }
+
+        if (session) {
+            router.push('/dashboard'); // Redirect to the dashboard page if logged in
+        } else {
+            router.push('/'); // Redirect to the landing page if not logged in
+        }
+    }
+
+
     return <nav className="fixed top-0 z-50 w-full border-b border-slate-800 bg-black/80 shadow-sm backdrop-blur-md print:hidden">
     <div className="py-5 px-10">
         <div className="flex justify-between">
@@ -26,18 +40,20 @@ export default function AppBar() {
                         <AiFillSlackCircle />
                     </div>
                     <div className="flex flex-col justify-center">
-                        <a href="/">
+                        <button onClick={handleLogoClick}>
                             <div>
                             Learn
                             <span className="text-purple-500">Land</span>
                             </div>
-                        </a>
+                        </button>
                     </div>
                 </div>
 
             </div>
             
-            {session.data?.user ? <button className="border border-slate-800 px-4 pt-2 pb-2 text-lg text-white font-semibold rounded-lg hover:bg-slate-800 transition-all cursor-pointer" onClick={() => signOut()}>
+            {session.data?.user ? <button className="border border-slate-800 px-4 pt-2 pb-2 text-lg text-white font-semibold rounded-lg hover:bg-slate-800 transition-all cursor-pointer" onClick={() => signOut({
+                callbackUrl: '/',
+            })}>
                     Logout
                 </button> : <div className="flex justify-center gap-4">
                 <button className="border border-slate-800 px-4 pt-2 pb-2 text-lg text-white font-semibold rounded-lg hover:bg-slate-800 transition-all cursor-pointer" onClick={() => signIn()}>
