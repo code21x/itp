@@ -25,7 +25,7 @@ export default function Signin() {
                         Email
                     </div>
                     <div className="">
-                        <input onChange={(e) => setEmail(e.target.value)} type="email" placeholder="name@email.com" className="w-full h-12 rounded-md border border-slate-800 bg-black p-4 pb-4 text-lg focus:border-purple-800 focus:outline-none focus:ring-2 ring-purple-800" />
+                        <input onChange={(e) => setEmail(e.target.value)} name="email" id="email" type="email" placeholder="name@email.com" className="w-full h-12 rounded-md border border-slate-800 bg-black p-4 pb-4 text-lg focus:border-purple-800 focus:outline-none focus:ring-2 ring-purple-800" />
                     </div>
                 </div>
                 <div className="pb-4">
@@ -33,11 +33,11 @@ export default function Signin() {
                         Password
                     </div>
                     <div>
-                        <input onChange={(e) => setPassword(e.target.value)} type={isPasswordVisible ? 'text' : 'password'} placeholder="••••••••" className="w-full h-12 rounded-md bg-black border border-slate-800 p-4 pb-4 text-lg focus:border-purple-800 focus:outline-none focus:ring-2 ring-purple-800" />
+                        <input onChange={(e) => setPassword(e.target.value)} type={isPasswordVisible ? 'text' : 'password'} name="password" id="password" placeholder="••••••••" className="w-full h-12 rounded-md bg-black border border-slate-800 p-4 pb-4 text-lg focus:border-purple-800 focus:outline-none focus:ring-2 ring-purple-800" />
                     </div>
                 </div>
                 
-                <button className="bg-purple-800 text-center w-full py-3 text-black text-xl font-semibold rounded-md hover:bg-purple-900 cursor-pointer transition-all" onClick={async () => {
+                <button id="login" name="login" className="bg-purple-800 text-center w-full py-3 text-black text-xl font-semibold rounded-md hover:bg-purple-900 cursor-pointer transition-all" onClick={async () => {
                     const res = await signIn("credentials", {
                         username: email,
                         password: password,
