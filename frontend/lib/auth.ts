@@ -2,6 +2,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import db from "@/db";
 import { createHmac } from 'crypto';
 
+
 export const NEXT_AUTH = {
     providers: [
         CredentialsProvider({
