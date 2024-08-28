@@ -1,6 +1,9 @@
+"use client"
+
 import { BsClipboard2Data } from "react-icons/bs";
 import { FaMagic } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
+import withAuth from "@/components/withAuth";
 
 interface LearnLandSidebarButton {
     title: string;
@@ -24,7 +27,7 @@ const sidebarMenuItems: LearnLandSidebarButton[] = [
 
 
 
-export default function DashBoard() {
+function DashBoard() {
 
     return <div className="grid grid-cols-12 h-screen w-screen">
        <div className="col-span-2 pt-36 ml-9 px-4 border-r border-slate-800">
@@ -44,3 +47,5 @@ export default function DashBoard() {
        <div className=""></div>
     </div>
 }
+
+export default withAuth(DashBoard);
