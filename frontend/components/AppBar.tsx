@@ -44,7 +44,7 @@ export default function AppBar() {
             return <div>Loading...</div>;
         }
 
-        if (session) {
+        if (session.data) {
             router.push('/dashboard'); // Redirect to the dashboard page if logged in
         } else {
             router.push('/'); // Redirect to the landing page if not logged in
