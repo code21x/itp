@@ -2,6 +2,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import db from "@/db";
 import { createHmac } from 'crypto';
 
+
 export const NEXT_AUTH = {
     providers: [
         CredentialsProvider({
@@ -53,6 +54,11 @@ export const NEXT_AUTH = {
         async signIn({ user, account, profile, email, credentials }: any) {
             console.log("callback signIn got hit")
             return true;
-        }
+        },
+
+        async redirect({ url, baseUrl }: any) {
+            // Redirect to the dashboard after sign up and log in
+            return baseUrl + '/dashboard';
+          },
     }
 }

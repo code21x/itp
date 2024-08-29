@@ -4,6 +4,8 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { signup } from "@/actions/user";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 
 export default function Signup() {
@@ -14,10 +16,32 @@ export default function Signup() {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [checkingPassword, setCheckingPassword] = useState(false);
     const router = useRouter();
+    const session = useSession();
+  
+
+  useEffect(() => {
+    if (session.status === "authenticated") {
+      router.push("/dashboard");
+    }
+  }, [session.status, router]);
 
     function togglePasswordVisibility() {
         setIsPasswordVisible((prevState: any) => !prevState);
     }
+
+    async function handleSignUp() {
+        const response = await signup(name, email, password);
+        await signIn("credentials", {
+            redirect: false,
+            username: email,
+            password: password,
+            callbackUrl: "/dashboard",
+        });
+        alert("Success");
+        console.log("monish");
+    }
+
+
 
 
     return <div className="flex justify-center h-screen">
@@ -52,11 +76,7 @@ export default function Signup() {
                 </div>
             </div>
             
-            <Button onClick={async () => {
-                const response = await signup(name, email, password);
-                alert("Success");
-                console.log("monish");
-                router.push("/signin")}}>Continue</Button>
+            <Button onClick={handleSignUp}>Continue</Button>
         </div>
     </div>
 </div>

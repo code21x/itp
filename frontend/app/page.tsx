@@ -1,5 +1,8 @@
 "use client"
 
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";  
 import { Poppins } from 'next/font/google';
 import AppBar from "@/components/AppBar";
 import { PiMedalFill } from "react-icons/pi";
@@ -20,6 +23,19 @@ const headingFont = localFont({
 
 
 export default function Home() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/dashboard");
+    }
+  }, [status, router]);
+
+  if (status === "loading") {
+      return <div>Loading...</div>;
+  }
+
   return (
     <div className={
       headingFont.className

@@ -5,7 +5,7 @@ import { BsStars } from "react-icons/bs";
 import { AiFillSlackCircle } from "react-icons/ai";
 import { BsMoonStars } from "react-icons/bs";
 import { useRouter } from "next/navigation";
-
+import { useEffect, useState } from "react";
 
 interface AppBarProps {
     login: boolean;
@@ -18,12 +18,33 @@ export default function AppBar() {
     const session = useSession();
     const router = useRouter();
 
+    const [theme, setTheme] = useState("dark");
+
+    useEffect(() => {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+          setTheme(savedTheme);
+          document.documentElement.className = savedTheme;
+        } else {
+          document.documentElement.className = "dark";
+        }
+    }, []);
+
+    const toggleTheme = () => {
+    console.log("i got clicked");
+        
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    document.documentElement.className = newTheme;
+    localStorage.setItem("theme", newTheme);
+    };
+
     const handleLogoClick = () => {
         if (session.status === 'loading') {
             return <div>Loading...</div>;
         }
 
-        if (session) {
+        if (session.data) {
             router.push('/dashboard'); // Redirect to the dashboard page if logged in
         } else {
             router.push('/'); // Redirect to the landing page if not logged in
@@ -69,9 +90,9 @@ export default function AppBar() {
                         <BsStars />
                     </div>
                 </div>
-                <div className="flex flex-col justify-center text-white font-semibold rounded-lg px-4 py-2 text-lg border border-slate-800 hover:bg-slate-800 transition-all cursor-pointer">
+                <button onClick={toggleTheme} className="flex flex-col justify-center text-white font-semibold rounded-lg px-4 py-2 text-lg border border-slate-800 hover:bg-slate-800 transition-all cursor-pointer">
                     <BsMoonStars />
-                </div>
+                </button>
             </div>}
 
         </div>
