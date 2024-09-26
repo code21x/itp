@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { BsClipboard2Data } from "react-icons/bs";
 import { FaMagic } from "react-icons/fa";
+import { SlNote } from "react-icons/sl";
 import { FaUser } from "react-icons/fa";
 import { RxHamburgerMenu } from "react-icons/rx";
 import withAuth from "@/components/withAuth";
@@ -22,8 +23,8 @@ const sidebarMenuItems: LearnLandSidebarButton[] = [
         icon: <FaMagic />
       },
       {
-        title: "profile",
-        icon: <FaUser />
+        title: "notes",
+        icon: <SlNote />
       }, 
 ]
 
@@ -51,7 +52,8 @@ function DashBoard() {
         </div>
       </div>
 
-       <div className={`bg-slate-950 ${extended ? "col-span-10" : "col-span-11"}`}></div>
+       <div className={`text-white bg-slate-950 ${extended ? "col-span-10" : "col-span-11"}`}>
+       </div>
     </div>
 }
 
