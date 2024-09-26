@@ -35,7 +35,7 @@ export default function Signup() {
             redirect: false,
             username: email,
             password: password,
-            callbackUrl: "/dashboard",
+            callbackUrl: "/input",
         });
         alert("Success");
         console.log("monish");
