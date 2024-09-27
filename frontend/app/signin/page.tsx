@@ -45,7 +45,7 @@ export default function Signin() {
 
         toast.dismiss(loadId);
         if (!res?.error) {
-            router.push("/dashboard");
+            router.push("/input");
             toast.success('Signed In');
         } else {
             toast.error('oops something went wrong..!');
