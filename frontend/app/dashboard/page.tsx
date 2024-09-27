@@ -7,6 +7,7 @@ import { SlNote } from "react-icons/sl";
 import { FaUser } from "react-icons/fa";
 import { RxHamburgerMenu } from "react-icons/rx";
 import withAuth from "@/components/withAuth";
+import { VideoPlayer } from "@/components/videoPlayer/videoPlayer";
 
 interface LearnLandSidebarButton {
     title: string;
@@ -33,6 +34,18 @@ const sidebarMenuItems: LearnLandSidebarButton[] = [
 function DashBoard() {
   const [extended, setExtended] = useState(false);
 
+  const videoJsOptions = {
+    controls: true,
+    responsive: true,
+    fluid: true,
+    sources: [
+      {
+        src: "https://appxcontent.kaxa.in/uploadvideo2/2024-04-21/harkirat_db/2024-04-21-0.6108763543914852.mp4",
+        type: "video/mp4",
+      },
+    ],
+  };
+
     return <div className="grid grid-cols-12 h-screen w-screen">
        <div className={`${extended ? "col-span-2": "col-span-1"} pt-28 ml-8 border-r border-slate-800`}>
 
@@ -52,7 +65,10 @@ function DashBoard() {
         </div>
       </div>
 
-       <div className={`text-white bg-slate-950 ${extended ? "col-span-10" : "col-span-11"}`}>
+       <div className={`text-white bg-slate-950 ${extended ? "col-span-10" : "col-span-11"} pt-28`}>
+
+       <VideoPlayer options={videoJsOptions} />
+
        </div>
     </div>
 }
