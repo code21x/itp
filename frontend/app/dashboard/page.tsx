@@ -40,7 +40,7 @@ function DashBoard() {
     fluid: true,
     sources: [
       {
-        src: "https://appxcontent.kaxa.in/uploadvideo2/2024-04-21/harkirat_db/2024-04-21-0.6108763543914852.mp4",
+        src: "https://www.youtube.com/watch?v=mt-9V0qL1X0",
         type: "video/mp4",
       },
     ],
