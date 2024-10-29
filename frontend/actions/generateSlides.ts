@@ -8,8 +8,8 @@ export default async function generateslideHandler(query: string) {
 
 
   try {
-    const geminiApiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBppTrddsvEBRgQH_OA9jR5pxqR5kon6b0";
-    const geminiApiKey = process.env.GEMINI_API_KEY || "AIzaSyBppTrddsvEBRgQH_OA9jR5pxqR5kon6b0";
+    const geminiApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`;
+    const geminiApiKey = process.env.GEMINI_API_KEY ?? "";
 
     const response = await axios.post(
       geminiApiUrl,
