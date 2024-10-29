@@ -1,5 +1,8 @@
 "use client"
-
+import React from "react";
+import Head from 'next/head';
+import Chat from "@/components/chat";
+import Chatbot from "@/components/chatbot";
 import { useState } from "react";
 import { BsClipboard2Data } from "react-icons/bs";
 import { FaMagic } from "react-icons/fa";
@@ -7,7 +10,7 @@ import { SlNote } from "react-icons/sl";
 import { FaUser } from "react-icons/fa";
 import { RxHamburgerMenu } from "react-icons/rx";
 import withAuth from "@/components/withAuth";
-import { VideoPlayer } from "@/components/videoPlayer/videoPlayer";
+// import { VideoPlayer } from "@/components/videoPlayer/videoPlayer";
 
 interface LearnLandSidebarButton {
     title: string;
@@ -67,8 +70,17 @@ function DashBoard() {
 
        <div className={`text-white bg-slate-950 ${extended ? "col-span-10" : "col-span-11"} pt-28`}>
 
-       <VideoPlayer options={videoJsOptions} />
+       {/* <VideoPlayer options={videoJsOptions} /> */}
 
+       <video width="75%" height="auto" controls>
+        <source src="../final_lecture_video.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      
+      
+      <Chatbot apiKey="AIzaSyBppTrddsvEBRgQH_OA9jR5pxqR5kon6b0" />
+      
+      
        </div>
     </div>
 }

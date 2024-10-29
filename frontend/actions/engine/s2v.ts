@@ -38,15 +38,14 @@ async function createSlide(slide: any, slideNum: any) {
 const client = new textToSpeech.TextToSpeechClient();
 
 async function createAudio(slide: any, slideNum: any) {
-    const request: any = {
+    const request = {
         input: { text: slide.speaker_notes },
         voice: { languageCode: 'en-US', ssmlGender: 'NEUTRAL' },
         audioConfig: { audioEncoding: 'MP3' },
     };
-
+    // @ts-ignore
     const [response] = await client.synthesizeSpeech(request);
     const audioPath = `./audio/audio_${slideNum}.mp3`;
-    // @ts-ignore
     fs.writeFileSync(audioPath, response.audioContent, 'binary');
     return audioPath;
 }
@@ -54,7 +53,7 @@ async function createAudio(slide: any, slideNum: any) {
 
 async function getAudioDuration(audioFile: any) {
     return new Promise((resolve, reject) => {
-        ffmpeg.ffprobe(audioFile, (err: any, metadata: any) => {
+        ffmpeg.ffprobe(audioFile, (err, metadata) => {
             if (err) return reject(err);
             const duration = metadata.format.duration;
             resolve(duration);
@@ -82,7 +81,7 @@ async function createVideoSlide(slideImage: any, audioFile: any, slideNum: any) 
                 ])
                 .save(outputPath)
                 .on('end', () => resolve(outputPath))
-                .on('error', (err: any) => reject(err));
+                .on('error', (err) => reject(err));
         });
     } catch (error) {
         console.error(`Error getting audio duration for slide ${slideNum}:`, error);
@@ -90,7 +89,8 @@ async function createVideoSlide(slideImage: any, audioFile: any, slideNum: any) 
 }
 
 async function concatenateVideos(clips: any) {
-    const outputVideo = './final_lecture_video.mp4';
+    console.log(__dirname);
+    const outputVideo = './public/final_lecture_video.mp4';
     return new Promise((resolve, reject) => {
         const ffmpegCommand = ffmpeg();
         clips.forEach((clip: any) => {
@@ -99,12 +99,29 @@ async function concatenateVideos(clips: any) {
 
         ffmpegCommand
             .on('end', () => resolve(outputVideo))
-            .on('error', (err: any) => reject(err))
+            .on('error', (err) => reject(err))
             .mergeToFile(outputVideo, './temp/');
     });
 }
 
-async function generateLectureVideo(lecture: any) {
+interface Slide {
+    title: string;
+    template_id: number;
+    texts: string[];
+    images: string[];
+    speaker_notes: string
+
+
+}
+
+interface Lecture {
+    title: string;
+    description: string;
+    slides: Slide[]
+
+}
+
+async function generateLectureVideo(lecture: Lecture) {
     const slidePaths = [];
     const audioPaths = [];
     const videoClips = [];
@@ -114,8 +131,7 @@ async function generateLectureVideo(lecture: any) {
     if (!fs.existsSync('./audio')) fs.mkdirSync('./audio');
     if (!fs.existsSync('./videos')) fs.mkdirSync('./videos');
 
-    console.log(lecture.slide.length);
-    for (let i = 0; i < lecture.slides?.length; i++) {
+    for (let i = 0; i < lecture.slides.length; i++) {
         const slide = lecture.slides[i];
 
         // Create slide images
@@ -240,11 +256,16 @@ async function generateLectureVideo(lecture: any) {
 // generateLectureVideo(lecture).catch(console.error);
 
 export default async function engine(original_prompt: string) {
+    console.log(__dirname)
     const aggregateSource = await aggregateHandler(original_prompt);
     console.log(aggregateSource);
     const lecture = await generateHandler(aggregateSource, original_prompt);
-    console.log(lecture);
-    const result = await generateLectureVideo(lecture).catch(console.error);;
+
+// Remove all occurrences of backticks
+    let cleanedString = lecture.replace(/^```json/, '').replace(/```$/, '');
+    console.log(cleanedString)
+    const lecResult = JSON.parse(cleanedString) as Lecture;
+    const result = await generateLectureVideo(lecResult).catch(console.error);;
     console.log(result);
 }
 
