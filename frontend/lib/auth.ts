@@ -58,7 +58,7 @@ export const NEXT_AUTH = {
 
         async redirect({ url, baseUrl }: any) {
             // Redirect to the dashboard after sign up and log in
-            return baseUrl + '/dashboard';
+            return baseUrl + '/input';
           },
     }
 }

@@ -26,11 +26,12 @@ Make sure the response is in the following format, only output the keys and valu
               "a stack is a data structure",
               "stacks are used in DFS"
           ],
+          "images": [
+                "https://imageurl.com/linkedlist.jpg"
+          ]
           "speaker_notes" : A script for the speaker to read
         }
-        "images": [
-                "https://imageurl.com/linkedlist.jpg"
-        ]
+        
     ]
 }`
     const lecture = await run(sources + prompt);

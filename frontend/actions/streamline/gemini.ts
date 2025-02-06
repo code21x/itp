@@ -19,18 +19,28 @@ const generationConfig = {
     responseMimeType: "text/plain",
 };
 
-async function run(prompt: string) {
+async function run(prompt: string, retries = 3, delay = 2000) {
     const chatSession = model.startChat({
-      generationConfig,
-   // safetySettings: Adjust safety settings
-   // See https://ai.google.dev/gemini-api/docs/safety-settings
-      history: [
-      ],
-});
+            generationConfig,
+        // safetySettings: Adjust safety settings
+        // See https://ai.google.dev/gemini-api/docs/safety-settings
+            history: [
+            ],
+    });
 
-    const result = await chatSession.sendMessage(prompt);
-    console.log(result.response.text());
-    return result.response.text();
+    for(let i = 0; i < retries; i++) {
+        try {
+            const result = await chatSession.sendMessage(prompt);
+            console.log(result.response.text());
+            return result.response.text();
+        } catch (error) {
+            console.error(`Attempt ${i + 1} failed: ${error}`);
+            if (i < retries - 1) await new Promise(res => setTimeout(res, delay));
+        }
+    }
+
+    
+    
 }
 
 export default run;

@@ -2,10 +2,11 @@
 import { Button } from "@/components/Button";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { signup } from "@/actions/user";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 
 export default function Signup() {
@@ -17,19 +18,23 @@ export default function Signup() {
     const [checkingPassword, setCheckingPassword] = useState(false);
     const router = useRouter();
     const session = useSession();
+
+
   
 
-  useEffect(() => {
-    if (session.status === "authenticated") {
-      router.push("/dashboard");
-    }
-  }, [session.status, router]);
+    useEffect(() => {
+        if (session.status === "authenticated") {
+        router.push("/dashboard");
+        }
+    }, [session.status, router]);
 
     function togglePasswordVisibility() {
         setIsPasswordVisible((prevState: any) => !prevState);
     }
 
     async function handleSignUp() {
+        const loadId = toast.loading('Signing up...');
+
         const response = await signup(name, email, password);
         await signIn("credentials", {
             redirect: false,
@@ -37,8 +42,13 @@ export default function Signup() {
             password: password,
             callbackUrl: "/input",
         });
-        alert("Success");
-        console.log("monish");
+
+        toast.dismiss(loadId);
+        if (response) {
+            toast.success('Signed In');
+        } else {
+            toast.error('oops something went wrong..!');
+        }
     }
 
 

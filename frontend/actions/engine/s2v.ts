@@ -30,7 +30,7 @@ async function createSlide(slide: any, slideNum: any) {
 
     const buffer = canvas.toBuffer('image/png');
     const slidePath = `./slides/slide_${slideNum}.png`;
-    fs.writeFileSync(slidePath, buffer);
+    fs.writeFileSync(slidePath, new Uint8Array(buffer));
     return slidePath;
 }
 
@@ -256,16 +256,37 @@ async function generateLectureVideo(lecture: Lecture) {
 // generateLectureVideo(lecture).catch(console.error);
 
 export default async function engine(original_prompt: string) {
-    console.log(__dirname)
+    console.log(__dirname);
     const aggregateSource = await aggregateHandler(original_prompt);
     console.log(aggregateSource);
     const lecture = await generateHandler(aggregateSource, original_prompt);
+    if(!lecture) {
+        console.error("Error: Lecture content is null or undefined.");
+        return;
+    }
 
-// Remove all occurrences of backticks
-    let cleanedString = lecture.replace(/^```json/, '').replace(/```$/, '');
-    console.log(cleanedString)
-    const lecResult = JSON.parse(cleanedString) as Lecture;
-    const result = await generateLectureVideo(lecResult).catch(console.error);;
-    console.log(result);
+    // Remove all occurrences of backticks
+    let cleanedString = lecture?.replace(/^```json/, '').replace(/```$/, '').trim();
+    console.log(cleanedString);
+
+    // Extract only the first valid JSON object (to prevent duplicates)
+    const match = cleanedString.match(/\{[\s\S]*\}/);
+    if (!match) {
+        console.error("Error: No valid JSON object found in lecture.");
+        console.error("Received Data:", cleanedString);
+        return;
+    }
+ 
+    cleanedString = match[0];
+
+    try {
+        const lecResult = JSON.parse(cleanedString as string) as Lecture;
+        const result = await generateLectureVideo(lecResult).catch(console.error);
+        console.log(result);
+    } catch (error) {
+        console.error("JSON Parsing Error:", error);
+        console.error("Faulty JSON:", cleanedString);
+    }
+    
 }
 
