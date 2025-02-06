@@ -6,6 +6,44 @@ import { createCanvas, loadImage } from 'canvas';
 import fs from 'fs';
 import ffmpeg from 'fluent-ffmpeg';
 import textToSpeech from '@google-cloud/text-to-speech';
+import path from "path";
+
+async function isImageValid(url: string): Promise<boolean> {
+    try {
+        const response = await fetch(url, { method: 'HEAD' });  // HEAD request for checking existence
+        return response.ok;
+    } catch (error) {
+        console.error(`Error fetching URL: ${url}`, error);
+        return false;
+    }
+}
+
+async function downloadImage(url: string, filepath: string) {
+
+
+    const directory = path.dirname(filepath); // Extract the directory path
+
+    // Ensure the directory exists
+    if (!fs.existsSync(directory)) {
+        fs.mkdirSync(directory, { recursive: true }); // Create directory recursively
+    }
+
+    const isValid = await isImageValid(url);
+    if (!isValid) {
+        console.log(`Image URL invalid, using default image.`);
+        url = 'https://yt3.googleusercontent.com/e4sECgz37PpKWCu8OK5AVSKvnQiwvj7wTtALayDdgoj3OnaWypOGcqgrpgDmJz2Vg9Cp-82k=s160-c-k-c0x00ffffff-no-rj';  // Replace with your fallback URL
+    }
+
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`Failed to fetch image: ${response.statusText}`);
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    await fs.promises.writeFile(filepath, new Uint8Array(buffer));
+}
 
 async function createSlide(slide: any, slideNum: any) {
     const width = 1280;
@@ -27,6 +65,15 @@ async function createSlide(slide: any, slideNum: any) {
     slide.texts.forEach((text: any, i: any) => {
         context.fillText(`- ${text}`, 50, 150 + i * 50);
     });
+
+    if (slide.images && slide.images.length > 0) {
+        const imageUrl = slide.images[0]; // Use the first image URL
+        const imagePath = `./images/image_${slideNum}.png`;
+        await downloadImage(imageUrl, imagePath); // Download the image
+
+        const image = await loadImage(imagePath); // Load the image into canvas
+        context.drawImage(image, 900, 150, 300, 300); // Position as needed
+    }
 
     const buffer = canvas.toBuffer('image/png');
     const slidePath = `./slides/slide_${slideNum}.png`;
